@@ -230,7 +230,7 @@ export default function Home() {
             </div>
             <div class="order-1 md:order-2 relative">
               <div class="aspect-square rounded-xl overflow-hidden shadow-2xl shadow-primary/20 relative group">
-                <img src="https://picsum.photos/800/800?random=1" alt="Minecraft无政府服务器" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <img src="https://picsum.photos/800/800?random=1" alt="Minecraft无政府服务器" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-transparent opacity-70"></div>
                 <div class="absolute bottom-6 left-6 right-6">
                   <div class="bg-darker/80 backdrop-blur-sm p-4 rounded-lg border-l-4 border-primary">
