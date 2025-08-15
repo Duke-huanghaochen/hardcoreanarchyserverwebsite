@@ -1,5 +1,5 @@
 {
-  "name": "hardcoreanarchyserverwebsite",  // 例如 "my-server-website"
+  "name": "hardcoreanarchyserver",  // 例如 "my-server-website"
   "compatibility_date": "2025-07-23",  // 日期可以用当前日期（格式：YYYY-MM-DD）
   "assets": {
     "directory": "./dist"  // 替换为你的资产目录路径（如./public）
