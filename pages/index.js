@@ -118,198 +118,211 @@ export default function Home() {
         }
       `}</style>
 
+      {/* 服务器状态指示器 - 右上角固定 */}
+      <div className="fixed top-20 right-4 md:top-24 md:right-8 bg-dark/80 border border-primary/30 rounded-lg p-3 z-40 glass">
+        <div className="flex items-center gap-2 mb-1">
+          <span className={`w-3 h-3 rounded-full ${serverStatus.online ? 'bg-accent' : 'bg-secondary'} animate-pulse`}></span>
+          <span className="text-sm font-medium">服务器状态: {serverStatus.online ? '正常运行中' : '离线'}</span>
+        </div>
+        <div className="text-xs text-light/70">
+          <span>玩家数量: {serverStatus.players.online}/{serverStatus.players.max}</span>
+        </div>
+      </div>
+
       {/* 导航栏 */}
-      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4 ${scrolled ? 'py-2 bg-darker/95' : 'glass'} border-b border-primary/30`}>
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4 ${scrolled ? 'py-2 bg-darker/95' : 'glass'} border-b border-primary/30`} id="navbar">
         <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <i className="fa fa-cube text-primary text-2xl"></i>
-            <span className="font-pixel text-primary text-lg md:text-xl animate-glow">极限无政府</span>
+            <span className="font-pixel text-primary text-lg animate-glow">极限无政府</span>
           </div>
-
+          
           {/* 桌面导航 */}
-          <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => scrollToSection('home')} className="text-light hover:text-primary transition-colors duration-300">首页</button>
-            <button onClick={() => scrollToSection('features')} className="text-light hover:text-primary transition-colors duration-300">服务器特色</button>
-            <button onClick={() => scrollToSection('rules')} className="text-light hover:text-primary transition-colors duration-300">生存规则</button>
-            <button onClick={() => scrollToSection('connect')} className="text-light hover:text-primary transition-colors duration-300">加入服务器</button>
-            <button onClick={() => scrollToSection('support')} className="text-light hover:text-primary transition-colors duration-300">支持我们</button>
+          <div className="hidden md:flex items-center gap-6">
+            <button onClick={() => scrollToSection('home')} className="hover:text-primary transition-colors duration-300">关于服务器</button>
+            <button onClick={() => scrollToSection('features')} className="hover:text-primary transition-colors duration-300">特色玩法</button>
+            <button onClick={() => scrollToSection('rules')} className="hover:text-primary transition-colors duration-300">生存规则</button>
+            <button onClick={() => scrollToSection('connect')} className="hover:text-primary transition-colors duration-300">加入我们</button>
+            <button onClick={() => scrollToSection('support')} className="hover:text-primary transition-colors duration-300">支持我们</button>
           </div>
-
+          
           {/* 移动菜单按钮 */}
           <button
+            id="menuBtn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-light hover:text-primary"
+            className="md:hidden text-light text-xl"
             aria-label="菜单"
           >
-            <i className={`fa ${mobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+            <i className={`fa ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
           </button>
         </div>
 
         {/* 移动导航菜单 */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-darker/95 border-t border-primary/30 animate-fadeIn">
-            <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
-              <button onClick={() => scrollToSection('home')} className="text-left text-light hover:text-primary py-2 border-b border-gray-800 transition-colors duration-300">首页</button>
-              <button onClick={() => scrollToSection('features')} className="text-left text-light hover:text-primary py-2 border-b border-gray-800 transition-colors duration-300">服务器特色</button>
-              <button onClick={() => scrollToSection('rules')} className="text-left text-light hover:text-primary py-2 border-b border-gray-800 transition-colors duration-300">生存规则</button>
-              <button onClick={() => scrollToSection('connect')} className="text-left text-light hover:text-primary py-2 border-b border-gray-800 transition-colors duration-300">加入服务器</button>
-              <button onClick={() => scrollToSection('support')} className="text-left text-light hover:text-primary py-2 transition-colors duration-300">支持我们</button>
-            </div>
-          </div>
-        )}
+        <div id="mobileMenu" className={`md:hidden absolute top-full left-0 w-full bg-darker border-t border-primary/30 py-4 px-4 flex flex-col gap-4 glass ${mobileMenuOpen ? '' : 'hidden'}`}>
+          <button onClick={() => scrollToSection('home')} className="hover:text-primary transition-colors duration-300 text-left">关于服务器</button>
+          <button onClick={() => scrollToSection('features')} className="hover:text-primary transition-colors duration-300 text-left">特色玩法</button>
+          <button onClick={() => scrollToSection('rules')} className="hover:text-primary transition-colors duration-300 text-left">生存规则</button>
+          <button onClick={() => scrollToSection('connect')} className="hover:text-primary transition-colors duration-300 text-left">加入我们</button>
+          <button onClick={() => scrollToSection('support')} className="hover:text-primary transition-colors duration-300 text-left">支持我们</button>
+        </div>
       </nav>
 
       {/* 英雄区 */}
-      <section id="home" className="pt-32 pb-20 md:pt-40 md:pb-28">
+      <header id="home" className="min-h-screen flex items-center justify-center relative pt-16 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-darker via-dark to-darker z-0"></div>
+        {/* 背景动态效果 */}
+        <div className="absolute inset-0 z-0 opacity-20">
+          <div className="absolute top-[10%] left-[15%] w-40 h-40 rounded-full bg-primary/30 blur-3xl animate-pulse-slow"></div>
+          <div className="absolute bottom-[20%] right-[10%] w-60 h-60 rounded-full bg-secondary/20 blur-3xl animate-pulse-slow delay-1000"></div>
+          <div className="absolute top-[40%] right-[25%] w-32 h-32 rounded-full bg-accent/20 blur-3xl animate-pulse-slow delay-2000"></div>
+        </div>
+        <div className="container mx-auto px-4 md:px-6 z-10 text-center">
+          <h1 className="font-pixel text-[clamp(2rem,5vw,3.5rem)] text-primary mb-4 animate-glow leading-tight">极限无政府服务器</h1>
+          <p className="font-pixel text-[clamp(1rem,2vw,1.5rem)] text-primary/80 mb-6">hardcore anarchy server</p>
+          <h2 className="text-[clamp(1.2rem,3vw,1.8rem)] mb-4 text-shadow max-w-3xl mx-auto">一个「连腐竹都在挖矿」的无政府服务器</h2>
+          <p className="text-[clamp(1rem,2vw,1.2rem)] text-light/80 mb-8 max-w-2xl mx-auto">An Anarchy Server Where Even the Admin Mines Ore</p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+            <button onClick={() => scrollToSection('connect')} className="bg-primary hover:bg-primary/90 text-darker font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-primary/30 font-pixel text-sm">
+              <i className="fa fa-server mr-2"></i>加入服务器
+            </button>
+            <button onClick={() => scrollToSection('home')} className="bg-transparent border-2 border-primary hover:bg-primary/10 text-primary font-bold py-3 px-8 rounded-lg transition-all duration-300 font-pixel text-sm">
+              <i className="fa fa-info-circle mr-2"></i>了解更多
+            </button>
+          </div>
+          <div className="text-secondary font-pixel text-[clamp(1rem,2vw,1.2rem)] animate-float">
+            <i className="fa fa-quote-left mr-2"></i>来活，来折腾，来留痕迹<i className="fa fa-quote-right ml-2"></i>
+          </div>
+          <p className="text-secondary/70 mt-2">Come Survive, Create Chaos, Leave Your Mark</p>
+        </div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <button onClick={() => scrollToSection('features')} className="text-primary/80 hover:text-primary transition-colors duration-300">
+            <i className="fa fa-chevron-down text-2xl"></i>
+          </button>
+        </div>
+      </header>
+
+      {/* 关于服务器 */}
+      <section id="about" className="py-20 relative">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-col items-center text-center">
-            <div className="relative mb-8 animate-float">
-              <img
-                src="https://picsum.photos/seed/minecraft/200/200"
-                alt="Minecraft Logo"
-                className="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-primary/50 shadow-lg shadow-primary/20"
-              />
-              <div className="absolute -top-3 -right-3 bg-secondary text-white px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1 animate-pulse-slow">
-                <span className="w-2 h-2 rounded-full bg-accent animate-ping"></span>
-                {serverStatus.online ? '在线' : '离线'}
+          <div className="text-center mb-16">
+            <h2 className="font-pixel text-[clamp(1.5rem,3vw,2.5rem)] text-primary mb-4 animate-glow inline-block">关于服务器</h2>
+            <div className="w-32 h-1 bg-primary/50 mx-auto mt-4"></div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div class="order-2 md:order-1">
+              <h3 class="text-2xl font-bold mb-6 text-light">欢迎来到没有特权的野生世界</h3>
+              <p class="text-light/80 mb-4 italic">Welcome to a Wild World Without Privileges</p>
+              <p class="mb-6 text-light/90 leading-relaxed">
+                这里没有管理员追着你喊 "不许拆家"，没有规则限制你 "必须合作"，但有一条铁律：谁都得认 "死了掉光装备，7 天不准上线" 的命。你可以当独行侠挖矿，也可以组队抢资源，甚至拆了别人的家 —— 但后果自己扛，没人会用权限帮你兜底，包括腐竹。
+              </p>
+              <p class="mb-6 text-light/70 leading-relaxed text-sm md:text-base">
+                No admins yelling "stop griefing" or forcing cooperation here. But one iron rule: Die, lose all your gear, and get banned for 7 days. Mine solo, team up to raid, or even blow up others' bases — but you deal with the consequences. No admin favors, not even for the server host ("Fuzhu").
+              </p>
+              <div class="flex items-center gap-4 mt-8">
+                <div class="flex -space-x-3">
+                  <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center border-2 border-dark"><i class="fa fa-user"></i></div>
+                  <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center border-2 border-dark"><i class="fa fa-user"></i></div>
+                  <div class="w-10 h-10 rounded-full bg-accent flex items-center justify-center border-2 border-dark"><i class="fa fa-user"></i></div>
+                  <div class="w-10 h-10 rounded-full bg-darker flex items-center justify-center border-2 border-dark text-primary">+12</div>
+                </div>
+                <p class="text-light/70 text-sm">已有玩家正在野生存活</p>
               </div>
             </div>
-
-            <h1 className="font-pixel text-[clamp(2rem,5vw,3.5rem)] mb-6 text-shadow text-primary animate-glow">极限无政府服务器</h1>
-            <p className="text-lg md:text-xl text-light/80 max-w-2xl mb-8">
-              一个没有规则、没有保护的野生Minecraft世界。在这里，一切由你掌控，生存或是毁灭，全凭你的智慧与勇气。
-            </p>
-
-            {/* 服务器状态卡片 */}
-            <div className="bg-darker border border-primary/30 rounded-xl p-6 w-full max-w-3xl shadow-lg mb-8 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="text-center md:text-left">
-                  <h2 className="text-2xl font-bold mb-2 text-light">服务器状态</h2>
-                  <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
-                    <span className={`inline-block w-3 h-3 rounded-full ${serverStatus.online ? 'bg-accent' : 'bg-secondary'} animate-pulse`}></span>
-                    <span className={`text-lg ${serverStatus.online ? 'text-accent' : 'text-secondary'}`}>
-                      {serverStatus.online ? '在线' : '离线'}
-                    </span>
+            <div class="order-1 md:order-2 relative">
+              <div class="aspect-square rounded-xl overflow-hidden shadow-2xl shadow-primary/20 relative group">
+                <img src="https://picsum.photos/800/800?random=1" alt="Minecraft无政府服务器" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-transparent opacity-70"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                  <div class="bg-darker/80 backdrop-blur-sm p-4 rounded-lg border-l-4 border-primary">
+                    <p class="font-pixel text-primary text-sm mb-1">服务器状态</p>
+                    <div class="flex items-center gap-2">
+                      <span class="inline-block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                      <span class="text-light/90 text-sm">正常运行中</span>
+                    </div>
                   </div>
-                  <p className="text-light/70">玩家数量: {serverStatus.players.online}/{serverStatus.players.max}</p>
-                </div>
-
-                <div className="flex flex-col items-center md:items-end gap-2 w-full md:w-auto">
-                  <button
-                    onClick={() => scrollToSection('connect')}
-                    className="bg-primary hover:bg-primary/80 text-dark font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
-                  >
-                    <i className="fa fa-server"></i>
-                    <span>立即加入</span>
-                  </button>
-                  <p className="text-sm text-light/50 italic">版本: 1.20.4</p>
                 </div>
               </div>
+              {/* 装饰元素 */}
+              <div class="absolute -top-6 -right-6 w-24 h-24 border-2 border-primary/30 rounded-lg -z-10"></div>
+              <div class="absolute -bottom-6 -left-6 w-16 h-16 border-2 border-secondary/30 rounded-lg -z-10"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 服务器特色 */}
-      <section id="features" className="py-16 md:py-24 bg-darker/50">
+      {/* 特色玩法 */}
+      <section id="features" className="py-20 bg-darker relative">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">服务器特色</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-dark border border-primary/30 rounded-lg p-6 hover:border-primary/70 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4">
-                <i className="fa fa-skull text-secondary text-xl"></i>
+          <div className="text-center mb-16">
+            <h2 className="font-pixel text-[clamp(1.5rem,3vw,2.5rem)] text-primary mb-4 animate-glow inline-block">特色玩法</h2>
+            <div className="w-32 h-1 bg-primary/50 mx-auto mt-4"></div>
+            <p className="mt-6 text-light/70 max-w-2xl mx-auto">体验最纯粹的Minecraft生存，没有规则束缚，只有弱肉强食的真实世界</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-dark/50 backdrop-blur-sm p-6 rounded-xl border border-light/10 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 group">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
+                <i className="fa fa-heartbeat text-primary text-2xl"></i>
               </div>
               <h3 className="text-xl font-bold mb-3 text-light">死亡惩罚</h3>
-              <p className="text-light/70">死亡后掉落所有物品，经验清零，随机传送至世界某处。真正的极限生存体验。</p>
+              <p className="text-sm text-light/70 mb-4">掉装备、禁登录，7天内只能看着别人挖矿（可捐款提前返回）</p>
+              <div className="h-1 w-12 bg-primary/30 group-hover:bg-primary/60 transition-colors duration-300"></div>
             </div>
-
-            <div className="bg-dark border border-primary/30 rounded-lg p-6 hover:border-primary/70 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4">
-                <i className="fa fa-balance-scale text-primary text-xl"></i>
+            <div className="bg-dark/50 backdrop-blur-sm p-6 rounded-xl border border-light/10 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
+                <i className="fa fa-user-secret text-primary text-2xl"></i>
               </div>
               <h3 className="text-xl font-bold mb-3 text-light">同权腐竹</h3>
-              <p className="text-light/70">腐竹与玩家享有同等权利，无特殊权限，不参与游戏内争斗，仅维护服务器稳定。</p>
+              <p className="text-sm text-light/70 mb-4">腐竹和你拥有相同的游戏权限，一起挖矿探索，共同体验游戏乐趣</p>
+              <div className="h-1 w-12 bg-primary/30 group-hover:bg-primary/60 transition-colors duration-300"></div>
             </div>
-
-            <div className="bg-dark border border-primary/30 rounded-lg p-6 hover:border-primary/70 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4">
-                <i className="fa fa-moon-o text-accent text-xl"></i>
+            <div className="bg-dark/50 backdrop-blur-sm p-6 rounded-xl border border-light/10 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
+                <i className="fa fa-university text-primary text-2xl"></i>
               </div>
               <h3 className="text-xl font-bold mb-3 text-light">丰碑园</h3>
-              <p className="text-light/70">服务器内设有丰碑园，记录那些在极限生存中取得卓越成就的玩家名字。</p>
+              <p className="text-sm text-light/70 mb-4">捐款支持服务器，你的名字将永久刻在游戏内的丰碑上</p>
+              <div className="h-1 w-12 bg-primary/30 group-hover:bg-primary/60 transition-colors duration-300"></div>
             </div>
-
-            <div className="bg-dark border border-primary/30 rounded-lg p-6 hover:border-primary/70 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4">
-                <i className="fa fa-book text-secondary text-xl"></i>
+            <div className="bg-dark/50 backdrop-blur-sm p-6 rounded-xl border border-light/10 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
+                <i className="fa fa-book text-primary text-2xl"></i>
               </div>
               <h3 className="text-xl font-bold mb-3 text-light">历史书</h3>
-              <p className="text-light/70">服务器重大事件将被记录在历史书中，供后人查阅。你的故事也可能被载入史册。</p>
+              <p className="text-sm text-light/70 mb-4">记录服务器大事和玩家故事，每周自动备份到社区云盘</p>
+              <div className="h-1 w-12 bg-primary/30 group-hover:bg-primary/60 transition-colors duration-300"></div>
             </div>
           </div>
 
-          {/* 腐竹工作清单 */}
-          <div className="mt-16 bg-dark border border-primary/30 rounded-lg p-8">
-            <h3 className="text-2xl font-bold mb-6 text-center text-primary">腐竹工作清单</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <h4 className="text-xl font-semibold mb-4 flex items-center gap-2 text-accent">
-                  <i className="fa fa-check-circle"></i> 日常三件事
-                </h4>
-                <ul className="space-y-3 text-light/80">
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-check text-accent mt-1"></i>
-                    <span>确保服务器稳定运行</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-check text-accent mt-1"></i>
-                    <span>处理玩家举报的外挂行为</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-check text-accent mt-1"></i>
-                    <span>记录服务器重大事件</span>
-                  </li>
-                </ul>
+          {/* 腐竹的工作清单 */}
+          <div className="mt-24 max-w-4xl mx-auto bg-dark/80 backdrop-blur-md p-8 rounded-xl border border-primary/20">
+            <h3 className="font-pixel text-xl text-primary mb-6 text-center">腐竹的 "工作清单"</h3>
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                  <i className="fa fa-check text-primary"></i>
+                </div>
+                <div>
+                  <h4 className="font-bold text-light mb-1">日常三件事</h4>
+                  <p className="text-light/70 text-sm">维护服务器稳定、参与社区讨论、与玩家共同游戏。</p>
+                </div>
               </div>
-
-              <div>
-                <h4 className="text-xl font-semibold mb-4 flex items-center gap-2 text-primary">
-                  <i className="fa fa-star"></i> 特殊任务
-                </h4>
-                <ul className="space-y-3 text-light/80">
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-star text-primary mt-1"></i>
-                    <span>定期举办服务器活动</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-star text-primary mt-1"></i>
-                    <span>收集玩家反馈并优化服务器</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-star text-primary mt-1"></i>
-                    <span>维护服务器历史记录</span>
-                  </li>
-                </ul>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                  <i className="fa fa-check text-primary"></i>
+                </div>
+                <div>
+                  <h4 className="font-bold text-light mb-1">特殊任务</h4>
+                  <p className="text-light/70 text-sm">处理服务器技术问题、定期备份数据、组织社区活动。</p>
+                </div>
               </div>
-
-              <div>
-                <h4 className="text-xl font-semibold mb-4 flex items-center gap-2 text-secondary">
-                  <i className="fa fa-ban"></i> 绝对不做
-                </h4>
-                <ul className="space-y-3 text-light/80">
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-ban text-secondary mt-1"></i>
-                    <span>不参与游戏内争斗</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-ban text-secondary mt-1"></i>
-                    <span>不向任何玩家提供物品或优势</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-ban text-secondary mt-1"></i>
-                    <span>不以权谋私，保持公正</span>
-                  </li>
-                </ul>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                  <i className="fa fa-times text-secondary"></i>
+                </div>
+                <div>
+                  <h4 className="font-bold text-light mb-1">绝对不做</h4>
+                  <p className="text-light/70 text-sm">不使用权限改装备、不干预玩家冲突、不特殊标识身份，与所有玩家共同维护公平游戏环境</p>
+                </div>
               </div>
             </div>
           </div>
@@ -317,204 +330,183 @@ export default function Home() {
       </section>
 
       {/* 生存规则 */}
-      <section id="rules" className="py-16 md:py-24 bg-dark">
+      <section id="rules" className="py-20 relative">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">生存规则</h2>
-          <div className="max-w-4xl mx-auto space-y-10">
-            <div className="bg-darker/50 border border-primary/30 rounded-lg p-6 md:p-8">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2 text-secondary">
-                <i className="fa fa-heartbeat"></i> 死亡机制
-              </h3>
-              <ul className="space-y-3 text-light/80">
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>死亡后掉落所有物品和经验</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>随机传送至世界某处重生</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>死亡地点不会有标记，需自行记忆</span>
-                </li>
-              </ul>
+          <div className="text-center mb-16">
+            <h2 className="font-pixel text-[clamp(1.5rem,3vw,2.5rem)] text-primary mb-4 animate-glow inline-block">生存规则</h2>
+            <div className="w-32 h-1 bg-primary/50 mx-auto mt-4"></div>
+            <p className="mt-6 text-light/70 max-w-2xl mx-auto">规则只有一条：活下去，但要记住这些潜规则</p>
+          </div>
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+            {/* 规则卡片 */}
+            <div className="bg-dark/70 backdrop-blur-sm p-6 rounded-xl border border-light/10 hover:border-primary/40 transition-all duration-300 group">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold group-hover:bg-primary/30 transition-colors duration-300">1</div>
+                <h3 className="font-bold text-xl text-light">死亡不是终点</h3>
+              </div>
+              <p className="text-light/70 mb-4 text-sm">死了掉光装备，7天内不能上线。想提前回来？捐点小钱买张 "加速复活卡"，3天就能归队。</p>
+              <p className="text-light/50 text-xs italic">Death means losing all gear and a 7-day ban. Donate for a "Resurrection Card" to return in 3 days.</p>
             </div>
-
-            <div className="bg-darker/50 border border-primary/30 rounded-lg p-6 md:p-8">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2 text-primary">
-                <i className="fa fa-balance-scale"></i> 同权规则
-              </h3>
-              <ul className="space-y-3 text-light/80">
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>所有玩家（包括腐竹）享有同等游戏权利</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>禁止任何形式的作弊、外挂行为</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>严禁利用游戏漏洞获取不正当优势</span>
-                </li>
-              </ul>
+            <div className="bg-dark/70 backdrop-blur-sm p-6 rounded-xl border border-light/10 hover:border-primary/40 transition-all duration-300 group">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold group-hover:bg-primary/30 transition-colors duration-300">2</div>
+                <h3 className="font-bold text-xl text-light">腐竹与玩家同权</h3>
+              </div>
+              <p className="text-light/70 mb-4 text-sm">腐竹使用普通账号游戏，与大家一样挖矿、探险、获取装备，共同遵守服务器规则</p>
+              <p className="text-light/50 text-xs italic">Fuzhu plays with a regular account, mining, exploring, and obtaining gear just like everyone else, abiding by server rules together.</p>
             </div>
-
-            <div className="bg-darker/50 border border-primary/30 rounded-lg p-6 md:p-8">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2 text-accent">
-                <i className="fa fa-trophy"></i> 丰碑申请
-              </h3>
-              <ul className="space-y-3 text-light/80">
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>在游戏中取得重大成就可申请丰碑</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>申请需提供截图或视频证据</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>丰碑审核通过后将被永久记录</span>
-                </li>
-              </ul>
+            <div className="bg-dark/70 backdrop-blur-sm p-6 rounded-xl border border-light/10 hover:border-primary/40 transition-all duration-300 group">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold group-hover:bg-primary/30 transition-colors duration-300">3</div>
+                <h3 className="font-bold text-xl text-light">丰碑申请规则</h3>
+              </div>
+              <p className="text-light/70 mb-4 text-sm">捐够1000元想上丰碑？先截图支付记录甩给腐竹（QQ/群内私聊），3天内没发？算你自动放弃。</p>
+              <p className="text-light/50 text-xs italic">Donate ¥1000 for a monument spot? Screenshot proof and DM Fuzhu within 3 days — no screenshot = no spot.</p>
             </div>
+            <div className="bg-dark/70 backdrop-blur-sm p-6 rounded-xl border border-light/10 hover:border-primary/40 transition-all duration-300 group">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold group-hover:bg-primary/30 transition-colors duration-300">4</div>
+                <h3 className="font-bold text-xl text-light">群聊潜规则</h3>
+              </div>
+              <p className="text-light/70 mb-4 text-sm">群里只聊 "服务器炸了没" "哪有钻石矿"，不解决 "谁欺负我"——有本事打回去，没本事攒装备。</p>
+              <p className="text-light/50 text-xs italic">Chat about server status/diamond spots — no "he griefed me" drama. Fight back or grind gear, your call.</p>
+            </div>
+          </div>
 
-            <div className="bg-darker/50 border border-primary/30 rounded-lg p-6 md:p-8">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2 text-light">
-                <i className="fa fa-comments"></i> 群聊潜规则
-              </h3>
-              <ul className="space-y-3 text-light/80">
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>禁止发表色情、暴力、政治等敏感内容</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>尊重他人，禁止人身攻击和侮辱</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <i className="fa fa-circle text-xs text-primary mt-2"></i>
-                  <span>服务器相关问题请@管理员</span>
-                </li>
-              </ul>
+          {/* 重要提示 */}
+          <div className="mt-16 max-w-3xl mx-auto bg-secondary/10 border-l-4 border-secondary p-6 rounded-r-lg">
+            <div className="flex items-start gap-3">
+              <i className="fa fa-exclamation-triangle text-secondary text-xl mt-1"></i>
+              <div>
+                <h4 className="font-bold text-light mb-2">唯一的 "潜规则"：别问 "腐竹是谁"</h4>
+                <p className="text-light/70 text-sm mb-3">他和你用同一个账号，穿铁甲、扛铁镐，挖矿时会迷路，被抢了只会蹲地上画圈圈，进组织喊 "老大" 比谁都快。</p>
+                <p className="text-light/70 text-sm"><strong>提示：腐竹（fuzhu）即服务器管理员（admin）</strong></p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 加入服务器 */}
-      <section id="connect" className="py-16 md:py-24 bg-darker/50">
+      {/* 加入我们 */}
+      <section id="connect" className="py-20 bg-darker relative">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">加入服务器</h2>
-          <div className="max-w-3xl mx-auto bg-dark border border-primary/30 rounded-xl p-8 shadow-lg">
-            <div className="flex flex-col items-center text-center mb-8">
-              <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-4">
-                <i className="fa fa-server text-primary text-3xl"></i>
+          <div className="text-center mb-16">
+            <h2 className="font-pixel text-[clamp(1.5rem,3vw,2.5rem)] text-primary mb-4 animate-glow inline-block">加入我们</h2>
+            <div className="w-32 h-1 bg-primary/50 mx-auto mt-4"></div>
+            <p className="mt-6 text-light/70 max-w-2xl mx-auto">准备好进入这个没有特权的野生世界了吗？</p>
+          </div>
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1 bg-dark/60 backdrop-blur-sm p-8 rounded-xl border border-primary/20">
+              <h3 className="text-2xl font-bold mb-6 text-light">如何加入服务器</h3>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                    <i className="fa fa-users text-primary"></i>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-light mb-1">步骤 1：加入QQ群</h4>
+                    <p className="text-light/70 text-sm">首先加入我们的QQ群，群号：<span className="text-primary font-bold">123456789</span>（示例群号）</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                    <i className="fa fa-server text-primary"></i>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-light mb-1">步骤 2：获取服务器地址</h4>
+                    <p className="text-light/70 text-sm">群文件中获取最新服务器IP地址和端口号</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                    <i className="fa fa-gamepad text-primary"></i>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-light mb-1">步骤 3：开始游戏</h4>
+                    <p className="text-light/70 text-sm">打开Minecraft，添加服务器，开始你的无政府生存之旅</p>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-2 text-light">服务器信息</h3>
-              <p className="text-light/70">复制以下信息，在Minecraft中直接连接</p>
+              <div className="mt-8">
+                <button className="inline-block bg-primary hover:bg-primary/90 text-darker font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-primary/30 font-pixel text-sm w-full text-center">
+                  <i className="fa fa-qrcode mr-2"></i>扫码加入QQ群
+                </button>
+              </div>
             </div>
-
-            <div className="space-y-6 mb-8">
-              <div className="bg-darker rounded-lg p-4 border border-primary/20">
-                <p className="text-sm text-light/50 mb-1">服务器IP</p>
-                <p className="text-xl font-mono text-primary" id="server-ip">play.simpfun.cn</p>
+            <div className="order-1 md:order-2 relative">
+              <div className="aspect-square rounded-xl overflow-hidden shadow-2xl shadow-primary/20 relative group">
+                <img src="https://picsum.photos/800/800?random=2" alt="Minecraft游戏截图" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div className="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-transparent opacity-70"></div>
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="bg-darker/80 backdrop-blur-sm p-4 rounded-lg border-l-4 border-accent">
+                    <p className="font-pixel text-accent text-sm mb-1">开服状态</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                        <span className="text-light/90 text-sm">已开服</span>
+                      </div>
+                      <span className="text-light/90 text-sm">{serverStatus.players.online}/20 玩家在线</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              <div className="bg-darker rounded-lg p-4 border border-primary/20">
-                <p className="text-sm text-light/50 mb-1">端口</p>
-                <p className="text-xl font-mono text-primary" id="server-port">16061</p>
-              </div>
-
-              <div className="bg-darker rounded-lg p-4 border border-primary/20">
-                <p className="text-sm text-light/50 mb-1">版本</p>
-                <p className="text-xl font-mono text-primary">1.20.4</p>
-              </div>
-            </div>
-
-            <div className="space-y-4 text-light/80">
-              <h4 className="text-lg font-semibold text-light mb-2">加入步骤</h4>
-              <ol className="list-decimal list-inside space-y-2 pl-4">
-                <li>启动Minecraft，确保版本为1.20.4</li>
-                <li>点击"多人游戏" &gt; "添加服务器"</li>
-                <li>输入服务器名称（任意）</li>
-                <li>复制粘贴上方服务器IP和端口</li>
-                <li>点击"完成"，然后双击服务器连接</li>
-              </ol>
+              {/* 装饰元素 */}
+              <div className="absolute -top-6 -right-6 w-24 h-24 border-2 border-primary/30 rounded-lg -z-10"></div>
+              <div className="absolute -bottom-6 -left-6 w-16 h-16 border-2 border-secondary/30 rounded-lg -z-10"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* 支持我们 */}
-      <section id="support" className="py-16 md:py-24 bg-dark">
+      <section id="support" className="py-20 relative">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">支持我们</h2>
-          <div className="max-w-4xl mx-auto space-y-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-darker/50 border border-primary/30 rounded-lg p-6 md:p-8">
-                <h3 className="text-2xl font-bold mb-4 text-accent">捐款用途</h3>
-                <ul className="space-y-3 text-light/80">
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-server text-primary mt-1"></i>
-                    <span>服务器租赁费用</span>
+          <div className="text-center mb-16">
+            <h2 className="font-pixel text-[clamp(1.5rem,3vw,2.5rem)] text-primary mb-4 animate-glow inline-block">支持我们</h2>
+            <div className="w-32 h-1 bg-primary/50 mx-auto mt-4"></div>
+            <p className="mt-6 text-light/70 max-w-2xl mx-auto">你的支持是服务器持续运营的动力</p>
+          </div>
+          <div className="max-w-4xl mx-auto bg-dark/70 backdrop-blur-sm p-8 rounded-xl border border-primary/20">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+              <div>
+                <h3 className="text-2xl font-bold mb-6 text-light">捐款用途与免责声明</h3>
+                <p className="text-light/70 mb-6 text-sm">
+                  您的捐款将<strong>仅用于</strong>以下用途：
+                </p>
+                <ul className="space-y-3 mb-8 text-sm text-light/80">
+                  <li className="flex items-center gap-2">
+                    <i className="fa fa-check-circle text-accent"></i>
+                    <span>Minecraft服务器维护与运营成本</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-bolt text-primary mt-1"></i>
-                    <span>网络带宽升级</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-microchip text-primary mt-1"></i>
-                    <span>硬件配置提升</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-gift text-primary mt-1"></i>
-                    <span>举办服务器活动奖品</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-darker/50 border border-primary/30 rounded-lg p-6 md:p-8">
-                <h3 className="text-2xl font-bold mb-4 text-secondary">免责声明</h3>
-                <ul className="space-y-3 text-light/80">
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-exclamation-triangle text-secondary mt-1"></i>
-                    <span>捐款为自愿行为，无任何回报</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-exclamation-triangle text-secondary mt-1"></i>
-                    <span>服务器运营存在不确定性，不保证永久运行</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <i className="fa fa-exclamation-triangle text-secondary mt-1"></i>
-                    <span>捐款后不因任何原因退款</span>
+                  <li className="flex items-center gap-2">
+                    <i className="fa fa-check-circle text-accent"></i>
+                    <span>网站服务器托管费用</span>
                   </li>
                 </ul>
+                <div className="bg-darker/80 p-4 rounded-lg border-l-4 border-accent mb-6">
+                  <p className="text-light/90 text-sm font-bold mb-2"><i className="fa fa-info-circle mr-2"></i>免责声明</p>
+                  <p className="text-light/70 text-xs">所有捐款仅用于服务器相关开支，不用于任何个人用途或其他商业活动。捐款明细将定期在QQ群文件公示。</p>
+                </div>
               </div>
-            </div>
-
-            <div className="bg-darker/50 border border-primary/30 rounded-lg p-6 md:p-8 text-center">
-              <h3 className="text-2xl font-bold mb-6 text-light">捐赠方式</h3>
-              <div className="flex flex-col items-center gap-6">
-                <div className="flex items-center gap-3 bg-darker px-6 py-3 rounded-lg border border-primary/20 w-full max-w-md">
-                  <i className="fa fa-credit-card text-primary text-xl"></i>
-                  <div className="text-left">
-                    <p className="text-sm text-light/50">支付宝</p>
-                    <p className="text-primary font-mono">alipay@example.com</p>
+              <div className="bg-darker/80 p-6 rounded-xl border border-primary/30">
+                <h4 className="font-bold text-lg text-primary mb-4 text-center">捐赠方式与备注说明</h4>
+                <div className="mb-6 flex justify-center">
+                  <div className="w-40 h-40 bg-dark rounded-lg flex items-center justify-center border border-primary/20">
+                    <span className="text-light/50 text-xs text-center"><i className="fa fa-qrcode text-2xl block mb-2"></i>微信收款码</span>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-3 bg-darker px-6 py-3 rounded-lg border border-primary/20 w-full max-w-md">
-                  <i className="fa fa-wechat text-primary text-xl"></i>
-                  <div className="text-left">
-                    <p className="text-sm text-light/50">微信支付</p>
-                    <p className="text-primary font-mono">wechatpay@example.com</p>
-                  </div>
-                </div>
-
-                <p className="text-light/70 mt-4">所有捐款将用于服务器维护和发展，感谢您的支持！</p>
+                <p className="text-light/70 text-sm mb-4 text-center">
+                  您可以加入QQ群后获取微信收款码。
+                </p>
+                <p className="text-light/70 text-sm mb-4 text-center">
+                  <i className="fa fa-exclamation-circle text-secondary mr-1"></i>为了避免账号被风控，请保证单次捐赠每笔小于10人民币
+                </p>
+                <p className="text-light/70 text-sm mb-4">
+                  捐赠时请在备注中填写您的<strong>玩家ID</strong>，我们将把您的ID添加到游戏内的"丰碑园"中永久展示。
+                </p>
+                <p className="text-light/70 text-sm">
+                  如不需要在丰碑园展示您的ID，请在备注中留空或填写"无需展示"。
+                </p>
               </div>
             </div>
           </div>
@@ -522,73 +514,24 @@ export default function Home() {
       </section>
 
       {/* 页脚 */}
-      <footer className="bg-darker py-12 border-t border-primary/30">
+      <footer className="bg-darker py-12 border-t border-primary/10">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <i className="fa fa-cube text-primary text-2xl"></i>
-                <span className="font-pixel text-primary text-lg animate-glow">极限无政府</span>
-              </div>
-              <p className="text-light/70 mb-4">一个没有规则、没有保护的野生Minecraft世界。</p>
-              <div className="flex gap-4">
-                <a href="#" className="text-light/70 hover:text-primary transition-colors duration-300">
-                  <i className="fa fa-github text-xl"></i>
-                </a>
-                <a href="#" className="text-light/70 hover:text-primary transition-colors duration-300">
-                  <i className="fa fa-twitter text-xl"></i>
-                </a>
-                <a href="#" className="text-light/70 hover:text-primary transition-colors duration-300">
-                  <i className="fa fa-youtube-play text-xl"></i>
-                </a>
-              </div>
+          <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-6">
+            <div className="flex items-center gap-2">
+              <i className="fa fa-cube text-primary text-2xl"></i>
+              <span className="font-pixel text-primary text-lg animate-glow">极限无政府</span>
             </div>
-
-            <div>
-              <h4 className="text-light font-bold mb-4">快速链接</h4>
-              <ul className="space-y-2 text-light/70">
-                <li><button onClick={() => scrollToSection('home')} className="hover:text-primary transition-colors duration-300">首页</button></li>
-                <li><button onClick={() => scrollToSection('features')} className="hover:text-primary transition-colors duration-300">服务器特色</button></li>
-                <li><button onClick={() => scrollToSection('rules')} className="hover:text-primary transition-colors duration-300">生存规则</button></li>
-                <li><button onClick={() => scrollToSection('connect')} className="hover:text-primary transition-colors duration-300">加入服务器</button></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-light font-bold mb-4">服务器信息</h4>
-              <ul className="space-y-2 text-light/70">
-                <li className="flex items-center gap-2">
-                  <i className="fa fa-server text-primary"></i>
-                  <span>IP: play.simpfun.cn</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <i className="fa fa-keyboard-o text-primary"></i>
-                  <span>端口: 16061</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <i className="fa fa-gamepad text-primary"></i>
-                  <span>版本: 1.20.4</span>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-light font-bold mb-4">联系我们</h4>
-              <ul className="space-y-2 text-light/70">
-                <li className="flex items-center gap-2">
-                  <i className="fa fa-envelope text-primary"></i>
-                  <span>contact@example.com</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <i className="fa fa-comments text-primary"></i>
-                  <span>QQ群: 123456789</span>
-                </li>
-              </ul>
+            <div className="flex gap-6">
+              <button onClick={() => scrollToSection('home')} className="text-light/60 hover:text-primary transition-colors duration-300"><i className="fa fa-info-circle text-xl"></i></button>
+              <button onClick={() => scrollToSection('features')} className="text-light/60 hover:text-primary transition-colors duration-300"><i className="fa fa-star text-xl"></i></button>
+              <button onClick={() => scrollToSection('rules')} className="text-light/60 hover:text-primary transition-colors duration-300"><i className="fa fa-book text-xl"></i></button>
+              <button onClick={() => scrollToSection('connect')} className="text-light/60 hover:text-primary transition-colors duration-300"><i className="fa fa-users text-xl"></i></button>
+              <button onClick={() => scrollToSection('support')} className="text-light/60 hover:text-primary transition-colors duration-300"><i className="fa fa-heart text-xl"></i></button>
             </div>
           </div>
-
-          <div className="pt-8 border-t border-primary/20 text-center text-light/50 text-sm">
-            <p>© 2025 极限无政府服务器. 保留所有权利.</p>
+          <div className="border-t border-light/10 pt-8 text-center text-light/50 text-sm">
+            <p className="mb-2">极限无政府服务器 - 一个连腐竹都在挖矿的无政府服务器</p>
+            <p>© 2023 极限无政府服务器 版权所有</p>
           </div>
         </div>
       </footer>
